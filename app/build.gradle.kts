@@ -80,4 +80,7 @@ dependencies {
 
 //    datastore preferences
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+//    Compose Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.0")
 }
