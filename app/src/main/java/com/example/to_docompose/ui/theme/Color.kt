@@ -1,6 +1,10 @@
 package com.example.to_docompose.ui.theme
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
@@ -23,3 +27,15 @@ val LowPriorityColor = Color(0xFF00C980)
 val MediumPriorityColor = Color(0xFFFFC114)
 val HighPriorityColor = Color(0XFFFF4646)
 val NonePriorityColor = Color(0xFFFFFFFF)
+
+private val ColorScheme.isLight: Boolean
+    @Composable
+    get() = MaterialTheme.colorScheme.background.luminance() > 0.5
+
+val ColorScheme.taskItemTextColor: Color
+    @Composable
+    get() = if (isLight) DarkGray else LightGray
+
+val ColorScheme.taskItemBackgroundColor: Color
+    @Composable
+    get() = if (isLight) Color.White else DarkGray
