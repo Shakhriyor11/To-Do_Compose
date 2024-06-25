@@ -1,9 +1,11 @@
 package com.example.to_docompose.ui.screens.list
 
 //import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -54,17 +56,20 @@ fun ListAppBar(
             )
         }
         else -> {
-            SearchAppBar(
-                text = searchTextState,
-                onTextChange = { newText ->
-                    sharedViewModel.searchTextState.value = newText
-                },
-                onCloseClicked = {
-                    sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
-                    sharedViewModel.searchTextState.value = ""
-                },
-                onSearchClicked = {}
-            )
+            Box(modifier = Modifier
+                .systemBarsPadding()) {
+                SearchAppBar(
+                    text = searchTextState,
+                    onTextChange = { newText ->
+                        sharedViewModel.searchTextState.value = newText
+                    },
+                    onCloseClicked = {
+                        sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
+                        sharedViewModel.searchTextState.value = ""
+                    },
+                    onSearchClicked = {}
+                )
+            }
         }
     }
 }

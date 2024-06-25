@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -44,7 +45,7 @@ fun PriorityDropDown(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val angle: Float by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f
+        targetValue = if (expanded) 180f else 0f, label = ""
     )
 
     Row(
@@ -54,7 +55,10 @@ fun PriorityDropDown(
             .clickable { expanded = true }
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.disabled)
+                color = MaterialTheme.colorScheme.onBackground.copy(
+                    alpha = ContentAlpha.disabled
+                ),
+                shape = MaterialTheme.shapes.small,
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -81,10 +85,12 @@ fun PriorityDropDown(
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowDropDown,
-                contentDescription = "Drop down Arrow icon"
+                contentDescription = "Drop down Arrow icon",
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
         DropdownMenu(
+            modifier = Modifier.fillMaxWidth(fraction = 0.94f),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
