@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ContentAlpha
 import com.example.to_docompose.R
+import com.example.to_docompose.components.DisplayAlertDialog
 import com.example.to_docompose.components.PriorityItem
 import com.example.to_docompose.data.models.Priority
 import com.example.to_docompose.ui.theme.LARGE_PADDING
@@ -104,9 +105,24 @@ fun ListAppBarActions(
     onSortClicked: (Priority) -> Unit,
     onDeleteAllClicked: () -> Unit
 ) {
+
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+
+    DisplayAlertDialog(
+        title = "Delete all tasks?",
+        message = "Are you sure you want to delete all tasks? After deleting all tasks, you can't undo this action. There is no going back after this action.",
+        openDialog = openDialog,
+        closeDialog = { openDialog = false },
+        onYesClicked = { onDeleteAllClicked() }
+    )
+
     SearchAction(onSearchClicked)
     SortAction(onSortClicked)
-    DeleteAllAction(onDeleteAllClicked)
+    DeleteAllAction(onDeleteAllClicked = {
+        openDialog = true
+    })
 }
 
 @Composable
