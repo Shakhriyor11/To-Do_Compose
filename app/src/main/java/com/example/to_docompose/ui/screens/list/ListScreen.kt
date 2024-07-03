@@ -1,5 +1,8 @@
 package com.example.to_docompose.ui.screens.list
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +37,10 @@ fun ListScreen(
     val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
     val searchTextState: String by sharedViewModel.searchTextState
 
+    val action by sharedViewModel.action
+
+    sharedViewModel.handleDatabaseActions(action = action)
+
     Scaffold(
         topBar = {
             ListAppBar(
@@ -41,12 +49,17 @@ fun ListScreen(
                 searchTextState
             )
         },
-        content = {
-            ListContent(
-                tasks = allTasks,
-                navigateToTaskScreen = navigateToTaskScreen
-            )
-            it
+        content = { paddingValue ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValue)
+            ) {
+                ListContent(
+                    tasks = allTasks,
+                    navigateToTaskScreen = navigateToTaskScreen
+                )
+            }
         },
         floatingActionButton = {
             ListFab(navigateToTaskScreen)
