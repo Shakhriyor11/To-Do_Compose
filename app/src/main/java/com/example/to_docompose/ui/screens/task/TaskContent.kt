@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,7 +24,9 @@ import com.example.to_docompose.data.models.Priority
 import com.example.to_docompose.ui.theme.LARGE_PADDING
 import com.example.to_docompose.ui.theme.MEDIUM_PADDING
 import com.example.to_docompose.ui.theme.ToDoComposeTheme
+import com.example.to_docompose.ui.theme.taskItemTextColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskContent(
     title: String,
@@ -44,8 +49,10 @@ fun TaskContent(
             value = title,
             onValueChange = { onTitleChange(it) },
             label = { Text(text = "Title") },
-            textStyle = MaterialTheme.typography.bodyLarge,
-            singleLine = true
+            textStyle = MaterialTheme
+                .typography
+                .bodyLarge.copy(color = MaterialTheme.colorScheme.taskItemTextColor),
+            singleLine = true,
         )
 
         Spacer(modifier = Modifier.height(MEDIUM_PADDING))
@@ -58,7 +65,10 @@ fun TaskContent(
             value = description,
             onValueChange = { onDescriptionChange(it) },
             label = { Text(text = "Description") },
-            textStyle = MaterialTheme.typography.bodyLarge
+            textStyle = MaterialTheme
+                .typography
+                .bodyLarge
+                .copy(color = MaterialTheme.colorScheme.taskItemTextColor)
         )
 
     }
