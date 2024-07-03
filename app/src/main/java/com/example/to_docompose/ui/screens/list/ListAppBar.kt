@@ -35,6 +35,7 @@ import com.example.to_docompose.ui.theme.TOP_APP_BAR_HEIGHT
 import com.example.to_docompose.ui.theme.ToDoComposeTheme
 import com.example.to_docompose.ui.theme.Typography
 import com.example.to_docompose.ui.viewmodels.SharedViewModel
+import com.example.to_docompose.util.Action
 import com.example.to_docompose.util.SearchAppBarState
 import com.example.to_docompose.util.TrailingIconState
 
@@ -52,7 +53,9 @@ fun ListAppBar(
                     sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
                 },
                 onSortClicked = {},
-                onDeleteClicked = {}
+                onDeleteAllClicked = {
+                    sharedViewModel.action.value = Action.DELETE_ALL
+                }
             )
         }
         else -> {
@@ -67,7 +70,9 @@ fun ListAppBar(
                         sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
                         sharedViewModel.searchTextState.value = ""
                     },
-                    onSearchClicked = {}
+                    onSearchClicked = {
+                        sharedViewModel.searchDatabase(searchQuery = it)
+                    }
                 )
             }
         }
@@ -79,7 +84,7 @@ fun ListAppBar(
 fun DefaultListAppBar(
     onSearchClicked: () -> Unit,
     onSortClicked: (Priority) -> Unit,
-    onDeleteClicked: () -> Unit
+    onDeleteAllClicked: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -88,7 +93,7 @@ fun DefaultListAppBar(
             )
         },
         actions = {
-            ListAppBarActions(onSearchClicked, onSortClicked, onDeleteClicked)
+            ListAppBarActions(onSearchClicked, onSortClicked, onDeleteAllClicked)
         }
     )
 }
@@ -97,11 +102,11 @@ fun DefaultListAppBar(
 fun ListAppBarActions(
     onSearchClicked: () -> Unit,
     onSortClicked: (Priority) -> Unit,
-    onDeleteClicked: () -> Unit
+    onDeleteAllClicked: () -> Unit
 ) {
     SearchAction(onSearchClicked)
     SortAction(onSortClicked)
-    DeleteAllAction(onDeleteClicked)
+    DeleteAllAction(onDeleteAllClicked)
 }
 
 @Composable
@@ -153,7 +158,7 @@ fun SortAction(
 
 @Composable
 fun DeleteAllAction(
-    onDeleteClicked: () -> Unit
+    onDeleteAllClicked: () -> Unit
 ) {
     var expended by remember {
         mutableStateOf(false)
@@ -179,7 +184,7 @@ fun DeleteAllAction(
                 },
                 onClick = {
                     expended = false
-                    onDeleteClicked()
+                    onDeleteAllClicked()
                 }
             )
         }
@@ -289,7 +294,7 @@ fun DefaultListAppBarPreview() {
         DefaultListAppBar(
             onSearchClicked = {},
             onSortClicked = {},
-            onDeleteClicked = {}
+            onDeleteAllClicked = {}
         )
     }
 }
@@ -301,7 +306,7 @@ fun DefaultListAppBarDarkPreview() {
         DefaultListAppBar(
             onSearchClicked = {},
             onSortClicked = {},
-            onDeleteClicked = {}
+            onDeleteAllClicked = {}
         )
     }
 

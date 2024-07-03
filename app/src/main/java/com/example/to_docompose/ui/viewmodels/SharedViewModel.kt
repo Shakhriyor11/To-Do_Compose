@@ -39,6 +39,9 @@ class SharedViewModel @Inject constructor(
 
     val action: MutableState<Action> = mutableStateOf(Action.NO_ACTION)
 
+    private val _searchedTasks = MutableStateFlow<RequestState<List<ToDoTask>>>(RequestState.Idle)
+    val searchedTasks: StateFlow<RequestState<List<ToDoTask>>> = _searchedTasks
+
     fun getAllTasks() {
         _allTasks.value = RequestState.Loading
         try {
@@ -50,6 +53,21 @@ class SharedViewModel @Inject constructor(
         } catch (e: Exception) {
             _allTasks.value = RequestState.Error(e)
         }
+    }
+
+    fun searchDatabase(searchQuery: String) {
+        _searchedTasks.value = RequestState.Loading
+        try {
+            viewModelScope.launch {
+                repository.searchDatabase(searchQuery = "%$searchQuery%")
+                    .collect { searchsTasks ->
+                        _searchedTasks.value = RequestState.Success(searchsTasks)
+                    }
+            }
+        } catch (e: Exception) {
+            _searchedTasks.value = RequestState.Error(e)
+        }
+        searchAppBarState.value = SearchAppBarState.TRIGGERED
     }
 
     private val _selectedTask: MutableStateFlow<ToDoTask?> = MutableStateFlow(null)
@@ -98,22 +116,52 @@ class SharedViewModel @Inject constructor(
         }
     }
 
+    private fun updateTask() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val toDoTask = ToDoTask(
+                id = id.value,
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
+            repository.updateTask(toDoTask)
+        }
+    }
+
+    private fun deleteTask() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val toDoTask = ToDoTask(
+                id = id.value,
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
+            repository.deleteTask(toDoTask = toDoTask)
+        }
+    }
+
+    private fun deleteAllTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllTasks()
+        }
+    }
+
     fun handleDatabaseActions(action: Action) {
         when(action) {
             Action.ADD -> {
                 addTask()
             }
             Action.UPDATE -> {
-//                updateTask()
+                updateTask()
             }
             Action.DELETE -> {
-//                deleteTask()
+                deleteTask()
             }
             Action.DELETE_ALL -> {
-//                deleteAllTasks()
+                deleteAllTasks()
             }
             Action.UNDO -> {
-//                addTask()
+                addTask()
             }
             else -> {
 
