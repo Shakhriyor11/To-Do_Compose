@@ -5,14 +5,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.to_docompose.navigation.SetupNavigation
 import com.example.to_docompose.ui.theme.ToDoComposeTheme
 import com.example.to_docompose.ui.viewmodels.SharedViewModel
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
+@OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
@@ -23,7 +26,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ToDoComposeTheme {
-                navController = rememberNavController()
+                navController = rememberAnimatedNavController()
                 SetupNavigation(
                     navController = navController,
                     sharedViewModel = sharedViewModel

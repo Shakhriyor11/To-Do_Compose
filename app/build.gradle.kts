@@ -85,4 +85,7 @@ dependencies {
 
 //    Compose Navigation
     implementation("androidx.navigation:navigation-compose:2.7.0")
+
+//    Accompanist Navigation Animation
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.35.1-alpha")
 }
