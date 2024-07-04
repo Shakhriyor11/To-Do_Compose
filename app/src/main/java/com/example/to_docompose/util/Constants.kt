@@ -14,4 +14,8 @@ object Constants {
 
     const val PREFERENCES_NAME = "todo_preferences"
     const val PREFERENCES_KEY = "sort_state"
+
+    const val SPLASH_SCREEN = "splash"
+
+    const val SPLASH_SCREEN_DELAY = 3000L
 }
